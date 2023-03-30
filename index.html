@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>ГНЦ</title>
+   <script src="https://telegram.org/js/telegram-web-app.js"></script> <!--Подключаем скрипт от телеграм-->
+
+   <style>
+      body{
+         color: var(--tg-theme-text-color);
+         background: var(--tg-theme-bg-color);
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         font-size: 18px;
+      }
+
+      .hint{
+         color: var(--tg-theme-hint-color);
+      }
+
+      .link{
+         color: var(--tg-theme-link-color);
+      }
+
+      .button{
+         background: var(--tg-theme-button-color);
+         color: var(--tg-theme-button-text-color);
+         font-size: 20px;
+         margin-top: 7px;
+      }
+
+
+      #itog{
+         text-align: center;
+      }
+      div{
+        background-color: var(--tg-theme-bg-color);
+        padding-top: 7px;
+      }
+      red{
+        background-color: rgb(200, 50, 50);
+      }
+      
+   </style>
+</head>
+
+<body>
+<div>ГНЦ</div>
+    <div>Цена конкурента:</div>
+           <input type="number" inputmode="numeric" id="costk" name="costk"/>
+        <div>Цена наша:</div>
+           <input type="number" inputmode="numeric" id="costn" name="costn"/>
+   <button id="btn" class="button">Рассчитать</button> <!--Кнопка, чтобы скрыть / показать результат-->
+   <div>Результат:</div>
+   <div id="itog"></div>
+</body>
+
+<script>
+   let tg = window.Telegram.WebApp; //получаем объект webapp телеграма 
+
+   tg.expand(); 
+
+   let btn = document.getElementById("btn"); //получаем кнопку скрыть/показать 
+
+   btn.addEventListener('click', function(){ //вешаем событие на нажатие html-кнопки
+    // Get the two numbers
+    let costk = document.getElementById("costk").value;
+    let costn = document.getElementById("costn").value;
+    let itog = document.getElementById("itog");
+    let itogchild = document.createElement('div'); 
+    let result = '';
+    let color = 'div'; 
+    let cost = '';
+
+// логика
+    if (parseFloat(costk)<300 || (parseFloat(costn) - parseFloat(costk))<10 )
+    {
+        result = 'Скидку не делаем'
+        color = 'red'; 
+    } else
+
+    if ((parseFloat(costk)>parseFloat(costn)) || isNaN(parseFloat(costk))|| isNaN(parseFloat(costn)))
+    {
+        result = 'Проверь цены!!!'
+        color = 'red'; 
+       
+    } else
+    if(parseFloat(costk)<3000)
+    {
+        costn = Math.round(parseFloat(costn)*0.7);
+        costk = parseFloat(costk)-50
+        cost = Math.max(costk, costn)
+        if (cost==costk){result = 'скидка 50р от цены конурента';}else{result = 'скидка 30% от нашей цены'}
+    } 
+    else {
+        costn = Math.round(parseFloat(costn)*0.7);
+        costk = parseFloat(costk)-500
+        cost = Math.max(costk, costn)
+        if (cost==costk){result = 'скидка 500р от цены конурента';}else{result = 'скидка 30% от нашей цены'}
+    } ;
+
+
+
+    ;
+
+    colordiv = document.createElement(color); 
+    costp = document.createElement('div'); 
+    colordiv.innerText = result;
+    if (parseFloat(cost)>0){costp.innerText = 'Итоговая цена: ' + cost};
+    colordiv.appendChild(costp);
+    itogchild.appendChild(colordiv); //показываем 
+    itog.appendChild(itogchild); //добавляем
+
+
+
+   });
+   
+</script>
+</html>
